@@ -4,6 +4,6 @@ export const formatHours = Intl.NumberFormat('de-DE', {
 }).format;
 
 export const formatMinutes = (minutes: number, precision = 0.25): string => {
-  const hours = Math.round(minutes / 60 / precision) * precision;
+  const hours = Math.floor(minutes / 60 / precision) * precision;
   return `${formatHours(hours)}h`;
 };
