@@ -18,16 +18,17 @@ const createWidget = async (
   widget.useDefaultPadding();
 
   const wrapper = widget.addStack();
+  wrapper.centerAlignContent();
   wrapper.layoutHorizontally();
 
   // current week hours
   const currentWeekProgress = current / 60 / hours;
   const currentWeekFormatted = formatMinutes(current);
-  addProgress(wrapper, currentWeekProgress, currentWeekFormatted, 30);
-  wrapper.addSpacer(18);
-  wrapper.centerAlignContent();
+  addInfo(wrapper, currentWeekProgress, currentWeekFormatted, i18n('LABEL.CURRENT_WEEK'));
 
-  // mini info container
+  wrapper.addSpacer(18);
+
+  // info container
   const infos = wrapper.addStack();
   infos.layoutHorizontally();
 

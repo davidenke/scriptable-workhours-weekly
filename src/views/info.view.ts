@@ -4,17 +4,22 @@ export const addInfo = (
   widget: ListWidget | WidgetStack,
   progress: number,
   label: string,
-  description: string
+  description?: string
 ) => {
   const info = widget.addStack();
   info.layoutVertically();
-  addProgress(info, progress, label, 23);
+  addProgress(info, progress, label);
 
-  info.addSpacer(9);
+  if (description) {
+    info.addSpacer(9); 
+    const extra = info.addStack();
+    extra.layoutHorizontally();
 
-  const text = info.addStack();
-  text.layoutHorizontally();
-  text.addSpacer(undefined as any);
-  text.addText(description).centerAlignText();
-  text.addSpacer(undefined as any);
+    extra.addSpacer(undefined as any);
+    const text = extra.addText(description);
+    extra.addSpacer(undefined as any);
+
+    text.centerAlignText();
+    text.font = Font.caption1();
+  }
 };
