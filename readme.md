@@ -35,7 +35,7 @@ The [output](dist) then contains the Widgets as `*.scriptable` files, which can 
 
 Once installed and configured as Widget, you have to provide two essential properties, using the "Parameter" field in the Widget configuration. The configuration must be provided as **valid JSON** for the time being (until I come up with a better solution).
 
-> All currently available properties can be found as `WidgetParameters` type in the [auxiliary.utils](src/utils/auxiliary.utils.ts).
+> All currently available properties can be found as `WidgetParameters` type in the [src/utils/auxiliary.utils.ts](src/utils/auxiliary.utils.ts).
 
 | Property     | Description                                                                                                                                                 |          | Default |
 | :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | :-----: |
@@ -63,7 +63,7 @@ To gain the benefits of typed JS I needed to provide typings for the [Scriptable
 
 After manully declaring some of the types, I decided to generate them from this API in some way, and found out that one of the example Widgets already uses the documentation in a JSON form, which is [provided seprately](https://docs.scriptable.app/scriptable.json).
 
-So I came up with a simple parser for the (I guess) MkDocs format, which I tracked in a separate [repository](https://github.com/davidenke/mkdocs-ts). This CLI tool is run after postinstall and generates the typings in [scriptable.d.ts](src/scriptable.d.ts), but could also be run directly with
+So I came up with a simple parser for the (I guess) MkDocs format, which I tracked in a separate [repository](https://github.com/davidenke/mkdocs-ts). This CLI tool is run after postinstall and generates the typings in [src/scriptable.d.ts](src/scriptable.d.ts), but could also be run directly with
 
 ```bash
 npx mkdocs-ts https://docs.scriptable.app/scriptable.json src/scriptable.d.ts
@@ -73,19 +73,29 @@ or in this package with `npm run generate:types`.
 
 ### Colors
 
-For convenience I derived the official colors available from the [Apple UI guidelines](https://developer.apple.com/design/human-interface-guidelines/foundations/color/#specifications) and added them along with some utility functions to [colors.utils](src/utils/colors.utils.ts).
+For convenience I derived the official colors available from the [Apple UI guidelines](https://developer.apple.com/design/human-interface-guidelines/foundations/color/#specifications) and added them along with some utility functions to [src/utils/colors.utils.ts](src/utils/colors.utils.ts).
 
 So dependend of the device theme and platform, the correct color can be used with e.g. `getSystemColor('red')`. The available colors are typed, of cause.
 
 ### I18n
 
-A simple translation mechanism is available using a [JSON translations file](src/translations.json) and some tooling in [i18n.utils](src/utils/i18n.utils.ts).
+A simple translation mechanism is available using a [JSON translations file](src/translations.json) and some tooling in [src/utils/i18n.utils.ts](src/utils/i18n.utils.ts).
 
 Dependend on the device language, the correct translation can be used with e.g. `i18n('LABEL.TODAY')`. The available translations keys are typed as well, as they're derived from the JSON.
 
+### Bundling `*.scriptable` package files
+
+For convenience, the Widgets are additionally packaged into `*.scriptable` files, which can be directly opened in Scriptable.
+
+This is done with a custom [esbuild plugin](tools/esbuild-plugin-scriptable.ts). This plugin is configured in the [esbuild.config.ts](esbuild.config.ts) and can be configured with a `scriptfile` path (relative to the root of the project) and a `package` property which can either be a path to a JSON file, or and inline object providing the package meta data.
+
+As this is typed, the plugin options can be found as `ScriptablePluginOptions` and the package meta data format as `ScriptableMetadata` types in [tools/esbuild-plugin-scriptable.ts](tools/esbuild-plugin-scriptable.ts).
+
+> This plugin may be split out in a separate package in the future. If you're interested in this, please let me know.
+
 ### Runtime configuration
 
-See. [Configuration](#configuration) or [auxiliary.utils](src/utils/auxiliary.utils.ts).
+See. [Configuration](#configuration) or [src/utils/auxiliary.utils.ts](src/utils/auxiliary.utils.ts).
 
 ### Stats as circles
 
@@ -93,7 +103,7 @@ For KPIs, as the fancy project owner would call them.
 
 As the Scriptable API exposes the posibility to paint in a draw context, one has nearly everything we need to draw stuff like in Canvas or SVG.
 
-Have a look on the `createProgressCircle` function at [progress-circle.view](src/view/progress-circle.view.ts) to see how this is done.
+Have a look on the `createProgressCircle` function at [src/view/progress-circle.view.ts](src/view/progress-circle.view.ts) to see how this is done.
 
 ---
 

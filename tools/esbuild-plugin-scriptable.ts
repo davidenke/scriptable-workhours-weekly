@@ -8,7 +8,7 @@ import * as pkg from '../package.json' assert { type: 'json' };
 
 export type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
 
-export type Scriptable = {
+export type ScriptableMetadata = {
   always_run_in_app: boolean;
   icon: {
     color: string;
@@ -19,13 +19,13 @@ export type Scriptable = {
   share_sheet_inputs: string[];
 };
 
-export type ScriptableOptions = {
+export type ScriptablePluginOptions = {
   scriptfile: string;
   outfile?: string;
-  package?: string | DeepPartial<Scriptable>;
+  package?: string | DeepPartial<ScriptableMetadata>;
 };
 
-export const prepareScriptable = (options: ScriptableOptions): Plugin => ({
+export const prepareScriptable = (options: ScriptablePluginOptions): Plugin => ({
   name: 'esbuild-plugin-scriptable',
   setup(build) {
     build.onEnd(async results => {
@@ -33,7 +33,7 @@ export const prepareScriptable = (options: ScriptableOptions): Plugin => ({
       if (results.errors.length > 0) return;
 
       // given package data can be set inline or as file
-      let packageData: DeepPartial<Scriptable> | undefined;
+      let packageData: DeepPartial<ScriptableMetadata> | undefined;
       if (options.package) {
         // assume a file path
         if (typeof options.package === 'string') {
@@ -62,7 +62,7 @@ export const prepareScriptable = (options: ScriptableOptions): Plugin => ({
 
       // prepare package
       const script = await readFile(resolve(options.scriptfile), 'utf-8');
-      const packageDefaults: Scriptable = {
+      const packageDefaults: ScriptableMetadata = {
         always_run_in_app: false,
         icon: {
           color: 'deep-blue',
@@ -74,7 +74,7 @@ export const prepareScriptable = (options: ScriptableOptions): Plugin => ({
       };
 
       // build metadata
-      const scriptable: Scriptable = _merge({}, packageDefaults, packageData);
+      const scriptable: ScriptableMetadata = _merge({}, packageDefaults, packageData);
 
       // write package to target
       return writeFile(target, JSON.stringify(scriptable, null, 2));
