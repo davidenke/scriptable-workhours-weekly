@@ -3,58 +3,57 @@ import { i18n } from './utils/i18n.utils';
 import { getHoursCurrentWeek, getHoursLastWeek, getHoursToday } from './utils/mite.utils';
 import { formatMinutes } from './utils/time.utils';
 import { addInfo } from './views/info.view';
-import { addProgress } from './views/progress.view';
 
 const widgetBackground = new Color('#222', 1);
 
-const createWidget = async (
+const createWidget = (
   hours: number,
   current: number,
   last: number,
-  today: number
-): Promise<ListWidget> => {
+  today: number,
+  hideLabels: boolean,
+  collapse: boolean
+): ListWidget => {
   const widget = new ListWidget();
-  widget.backgroundColor = widgetBackground;
-  widget.useDefaultPadding();
+  if (!collapse) {
+    widget.backgroundColor = widgetBackground;
+    widget.useDefaultPadding();
+  }
 
   const wrapper = widget.addStack();
   wrapper.layoutHorizontally();
   wrapper.centerAlignContent();
 
+  // add a circle
+  const addHours = (minutes: number, progress: number, label: string) => {
+    const formatted = formatMinutes(minutes);
+    addInfo(wrapper, progress, formatted, !hideLabels ? label : undefined);
+  };
+
   // current week hours
-  const currentWeekProgress = current / 60 / hours;
-  const currentWeekFormatted = formatMinutes(current);
-  addInfo(wrapper, currentWeekProgress, currentWeekFormatted, i18n('LABEL.CURRENT_WEEK'));
-
-  // info container
-  const infos = wrapper.addStack();
-  infos.layoutHorizontally();
-
-  // last week hours
-  const lastWeekProgress = last / 60 / hours;
-  const lastWeekFormatted = formatMinutes(last);
-  addInfo(infos, lastWeekProgress, lastWeekFormatted, i18n('LABEL.LAST_WEEK'));
-
-  // todays hours
-  const todayProgress = today / 60 / (hours / 5);
-  const todayFormatted = formatMinutes(today);
-  addInfo(infos, todayProgress, todayFormatted, i18n('LABEL.TODAY'));
+  addHours(current, current / 60 / hours, i18n('LABEL.CURRENT_WEEK'));
+  !collapse && wrapper.addSpacer(undefined as any);
+  addHours(last, last / 60 / hours, i18n('LABEL.LAST_WEEK'));
+  !collapse && wrapper.addSpacer(undefined as any);
+  addHours(today, today / 60 / (hours / 5), i18n('LABEL.TODAY'));
 
   return widget;
 };
 
-const { context, token, hours = 40 } = readParameters();
+// we always need application parameters and the current week hours
+const { context, token, hours = 40, hideLabels = false, collapse = false } = readParameters();
 const current = context && token ? await getHoursCurrentWeek(context, token) : 12.5;
 const last = context && token ? await getHoursLastWeek(context, token) : 38.75;
 const today = context && token ? await getHoursToday(context, token) : 3.25;
-const widget = await createWidget(hours, current, last, today);
+const widget = createWidget(hours, current, last, today, hideLabels, collapse);
 
-if (!config.runsInWidget) {
-  widget.presentMedium();
-} else {
+if (config.runsInWidget) {
   Script.setWidget(widget);
+} else if (config.runsInApp) {
+  await widget.presentMedium();
+} else {
+  await QuickLook.present(widget, undefined as any);
 }
-
 Script.complete();
 
 export {};

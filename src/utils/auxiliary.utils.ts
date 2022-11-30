@@ -1,15 +1,17 @@
 type WidgetParameters = {
+  collapse: boolean;
   context: string;
   token: string;
   hours: number;
+  hideLabels: boolean;
 };
 
 /**
  * Reads and delivers widget parameters.
  */
 export const readParameters = (): Partial<WidgetParameters> => {
-  const { context, token, hours } = JSON.parse(args.widgetParameter ?? '{}');
-  return { context, token, hours };
+  const { collapse, context, token, hours, hideLabels } = JSON.parse(args.widgetParameter ?? '{}');
+  return { collapse, context, token, hours, hideLabels };
 };
 
 /**
