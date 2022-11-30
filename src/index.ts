@@ -46,10 +46,10 @@ const createWidget = async (
   return widget;
 };
 
-const { context, token, hours } = readParameters();
-const current = await getHoursCurrentWeek(context, token);
-const last = await getHoursLastWeek(context, token);
-const today = await getHoursToday(context, token);
+const { context, token, hours = 40 } = readParameters();
+const current = context && token ? await getHoursCurrentWeek(context, token) : 12.5;
+const last = context && token ? await getHoursLastWeek(context, token) : 38.75;
+const today = context && token ? await getHoursToday(context, token) : 3.25;
 const widget = await createWidget(hours, current, last, today);
 
 if (!config.runsInWidget) {

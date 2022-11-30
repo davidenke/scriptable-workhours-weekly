@@ -7,8 +7,8 @@ type WidgetParameters = {
 /**
  * Reads and delivers widget parameters.
  */
-export const readParameters = (): WidgetParameters => {
-  const { context = 'www', token = 'XXX', hours = 40 } = JSON.parse(args.widgetParameter ?? '{}');
+export const readParameters = (): Partial<WidgetParameters> => {
+  const { context, token, hours } = JSON.parse(args.widgetParameter ?? '{}');
   return { context, token, hours };
 };
 
