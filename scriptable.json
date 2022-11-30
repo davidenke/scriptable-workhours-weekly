@@ -1,8 +1,9 @@
 {
   "always_run_in_app": true,
-  "name": "Workhours Weekly",
   "icon": {
     "color": "blue",
     "glyph": "business-time"
-  }
+  },
+  "name": "Workhours Weekly",
+  "share_sheet_inputs": ["plain-text"]
 }

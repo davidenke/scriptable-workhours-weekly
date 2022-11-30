@@ -3,13 +3,15 @@ import { homedir } from 'os';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 
+import pkg from './package.json' assert { type: 'json' };
 import { prepareScriptable } from './tools/esbuild-plugin-scriptable.js';
 
 const isWatchMode = process.argv.includes('--watch');
+const target = `./dist/${pkg.name}.js`;
 
 build({
   entryPoints: ['./src/index.ts'],
-  outfile: './dist/index.js',
+  outfile: target,
   platform: 'node',
   format: 'esm',
   bundle: true,
@@ -21,7 +23,7 @@ build({
   plugins: [
     clean({ patterns: ['./dist'] }),
     prepareScriptable({
-      scriptfile: './dist/index.js',
+      scriptfile: target,
       package: './scriptable.json'
     }),
     {
@@ -29,7 +31,7 @@ build({
       setup(build) {
         build.onEnd(() => {
           // copyFile(
-          //   resolve('./dist/index.js'),
+          //   resolve(target),
           //   resolve(
           //     homedir(),
           //     './Library/Mobile Documents/iCloud~dk~simonbs~Scriptable/Documents/Workhours Weekly.js'
