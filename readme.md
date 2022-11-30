@@ -1,15 +1,23 @@
 # Scriptable Workhours Weekly
 
+![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/homescreen.jpg)
+![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/lockscreen.jpg)
+
+
 This package contains some Widgets to be used in the georgeous [Scriptable](https://scriptable.app) app for iOS.
 It is a simple UI to show **your workhours from [Mite](https://mite.yo.lk)** using [its API](https://mite.yo.lk/en/api/).
 
 To give the 🦄 some 🍫 this is based on [Typescript](https://www.typescriptlang.org/), is build using [esbuild](https://esbuild.github.io/) and is tested (at least partially) using [jest](https://jestjs.io/).
+
+![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/proudof.jpg)
 
 For now this package contains these Widgets:
 
 - **Workhours Lockscreen** - Shows the workhours of the current week in a small Widget with the circle as big as possible on the Lockscreen
 - **Workhours Single** - A single Widget to show workhours of the current week with a label on the Homescreen
 - **Workhours Triple** - Shows three stats as medium Widget on the Homescreen, current week, last week and today
+
+![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/available-widgets.jpg)
 
 ## Installation
 
@@ -50,6 +58,8 @@ So a sample configuration could look like this:
 ```json
 { "context": "mycompany", "token": "somegeneratedtoken", "hours": 35, "hideLabels": true }
 ```
+
+![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/configure-widget.jpg)
 
 ---
 
