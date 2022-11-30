@@ -3,6 +3,16 @@ type WidgetParameters = {
   token: string;
 };
 
+const colorBgStart = new Color('#13233F', 1);
+const colorBgEnd = new Color('#141414', 1);
+const colorLights = [
+  new Color('#ec5858', 1),
+  new Color('#f69153', 1),
+  new Color('#ffca4d', 1),
+  new Color('#e0d84f', 1),
+  new Color('#c0e650', 1)
+];
+
 const readParameters = (): WidgetParameters => {
   const { context = 'context', token = 'token' } = JSON.parse(args.widgetParameter ?? '{}');
   return { context, token };
@@ -11,7 +21,7 @@ const readParameters = (): WidgetParameters => {
 const createWidget = async (context: string, token: string): Promise<ListWidget> => {
   const gradient = new LinearGradient();
   gradient.locations = [0, 1];
-  gradient.colors = [new Color('#141414', 1), new Color('#13233F', 1)];
+  gradient.colors = [colorBgStart, colorBgEnd];
 
   const widget = new ListWidget();
   widget.backgroundGradient = gradient;
@@ -32,14 +42,7 @@ const createWidget = async (context: string, token: string): Promise<ListWidget>
 };
 
 const getPercentageColor = (percentage: number): Color => {
-  const colors = [
-    new Color('#ec5858', 1),
-    new Color('#f69153', 1),
-    new Color('#ffca4d', 1),
-    new Color('#e0d84f', 1),
-    new Color('#c0e650', 1)
-  ];
-  return colors[Math.floor((colors.length - 1) * percentage)];
+  return colorLights[Math.floor((colorLights.length - 1) * percentage)];
 };
 
 const createProgressCircle = (percentage: number, size = 100, stroke = 10): DrawContext => {
