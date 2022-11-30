@@ -13,5 +13,13 @@ describe('time.utils', () => {
     it('should return 1,5h when minutes is 90', () => {
       expect(formatMinutes(90)).toBe('1,5h');
     });
+
+    it('should floor 80 minutes to quarter hours 1,25h', () => {
+      expect(formatMinutes(80)).toBe('1,25h');
+    });
+
+    it('should ceil 40 minutes to quarter hours 0,75h', () => {
+      expect(formatMinutes(40)).toBe('0,75h');
+    });
   });
 });

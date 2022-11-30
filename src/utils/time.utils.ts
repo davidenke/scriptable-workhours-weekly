@@ -1,6 +1,9 @@
-export const formatMinutes = (minutes: number): string => {
-  const hours = Math.floor(minutes / 60);
-  const left = 10 / (60 / Math.round(minutes % 60));
-  if (left === 0) return `${hours}h`;
-  return `${hours},${left}h`;
+export const formatHours = Intl.NumberFormat('de-DE', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0
+}).format;
+
+export const formatMinutes = (minutes: number, precision = 0.25): string => {
+  const hours = Math.round(minutes / 60 / precision) * precision;
+  return `${formatHours(hours)}h`;
 };
