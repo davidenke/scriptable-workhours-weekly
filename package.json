@@ -1,0 +1,31 @@
+{
+  "name": "workhours-weekly",
+  "version": "0.1.0",
+  "description": "Weekly Workhours Widget for Scriptable",
+  "author": {
+    "email": "david@enke.dev",
+    "name": "David Enke"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "postinstall": "npm run generate:types",
+    "generate:types": "mkdocs-ts https://docs.scriptable.app/scriptable.json src/scriptable.d.ts",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "build": "ts-node-esm --transpileOnly --logError esbuild.config.ts",
+    "build:watch": "npm run build -- --watch",
+    "release": "release-it --ci --verbose"
+  },
+  "devDependencies": {
+    "@davidenke/mkdocs-ts": "0.1.18",
+    "@types/lodash-es": "4.17.6",
+    "@types/node": "18.11.9",
+    "esbuild": "0.15.15",
+    "esbuild-plugin-clean": "1.0.1",
+    "lodash-es": "4.17.21",
+    "release-it": "15.5.0",
+    "ts-node": "10.9.1",
+    "typescript": "4.9.3"
+  }
+}
