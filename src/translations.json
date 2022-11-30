@@ -1,0 +1,10 @@
+{
+  "de": {
+    "LABEL.TODAY": "Heute",
+    "LABEL.LAST_WEEK": "Letzte Woche"
+  },
+  "en": {
+    "LABEL.TODAY": "Tody",
+    "LABEL.LAST_WEEK": "Last week"
+  }
+}

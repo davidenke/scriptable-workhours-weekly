@@ -1,5 +1,7 @@
 export const degreesToRadians = (degrees: number): number => {
-  return ((degrees - 90) * Math.PI) / 180;
+  const toRad = (angle: number): number => (angle * Math.PI) / 180;
+  // to start on top, substract 90 degrees
+  return toRad(degrees) - toRad(90);
 };
 
 // https://gist.github.com/arce/9dd11df69ad73e422c7a7b106f54c78e#file-arc-js-L69

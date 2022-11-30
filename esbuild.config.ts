@@ -87,10 +87,11 @@ const prepareScriptable = (options: ScriptableOptions): Plugin => ({
 build({
   entryPoints: ['./src/index.ts'],
   outfile: './dist/index.js',
-  bundle: true,
   platform: 'node',
   format: 'esm',
+  bundle: true,
   minify: !isWatchMode,
+  treeShaking: !isWatchMode,
   sourcemap: isWatchMode,
   watch: isWatchMode,
   logLevel: 'info',
