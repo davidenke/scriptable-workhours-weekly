@@ -36,8 +36,22 @@ const prepareScriptable = (options: ScriptableOptions): Plugin => ({
       // do not go on if there are errors
       if (results.errors.length > 0) return;
 
+      // given package data can be set inline or as file
+      let packageData: DeepPartial<Scriptable> | undefined;
+      if (options.package) {
+        // assume a file path
+        if (typeof options.package === 'string') {
+          const rawPackageData = await readFile(resolve(options.package), 'utf-8');
+          packageData = JSON.parse(`${rawPackageData}`);
+        }
+        // assume inline data
+        else {
+          packageData = options.package;
+        }
+      }
+
       // prepare target
-      const scriptName = (typeof options.package !== 'string' && options.package?.name) ?? pkg.name;
+      const scriptName = packageData?.name ?? pkg.name;
       let { outdir, outfile } = build.initialOptions;
       let target: string;
       if (options.outfile) {
@@ -63,19 +77,7 @@ const prepareScriptable = (options: ScriptableOptions): Plugin => ({
         share_sheet_inputs: []
       };
 
-      // given package data can be set inline or as file
-      let packageData: DeepPartial<Scriptable> | undefined;
-      if (options.package) {
-        // assume a file path
-        if (typeof options.package === 'string') {
-          const rawPackageData = await readFile(resolve(options.package), 'utf-8');
-          packageData = JSON.parse(`${rawPackageData}`);
-        }
-        // assume inline data
-        else {
-          packageData = options.package;
-        }
-      }
+      // build metadata
       const scriptable: Scriptable = _merge({}, packageDefaults, packageData);
 
       // write package to target
@@ -90,23 +92,16 @@ build({
   platform: 'node',
   format: 'esm',
   bundle: true,
-  minify: false, // !isWatchMode,
-  treeShaking: false, // !isWatchMode,
-  sourcemap: false, // isWatchMode,
+  minify: !isWatchMode,
+  treeShaking: !isWatchMode,
+  sourcemap: isWatchMode,
   watch: isWatchMode,
-  logLevel: 'info',
+  logLevel: isWatchMode ? 'info' : 'warning',
   plugins: [
     clean({ patterns: ['./dist'] }),
     prepareScriptable({
       scriptfile: './dist/index.js',
-      package: {
-        always_run_in_app: true,
-        name: 'Workhours Weekly',
-        icon: {
-          color: 'blue',
-          glyph: 'business-time'
-        }
-      }
+      package: './scriptable.json'
     }),
     {
       name: 'Copy target',
