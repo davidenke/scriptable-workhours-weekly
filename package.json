@@ -18,7 +18,7 @@
     "release": "release-it --ci --verbose"
   },
   "devDependencies": {
-    "@davidenke/mkdocs-ts": "0.1.18",
+    "@davidenke/mkdocs-ts": "0.1.19",
     "@types/lodash-es": "4.17.6",
     "@types/jest": "29.2.3",
     "@types/node": "18.11.9",
