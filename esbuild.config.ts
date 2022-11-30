@@ -1,17 +1,17 @@
-import { copyFile } from 'fs/promises';
-import { homedir } from 'os';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 
-import pkg from './package.json' assert { type: 'json' };
 import { prepareScriptable } from './tools/esbuild-plugin-scriptable.js';
 
 const isWatchMode = process.argv.includes('--watch');
-const target = `./dist/${pkg.name}.js`;
 
 build({
-  entryPoints: ['./src/index.ts'],
-  outfile: target,
+  entryPoints: [
+    './src/workhours-lockscreen.ts',
+    './src/workhours-single.ts',
+    './src/workhours-triplet.ts'
+  ],
+  outdir: './dist',
   platform: 'node',
   format: 'esm',
   bundle: true,
@@ -23,23 +23,17 @@ build({
   plugins: [
     clean({ patterns: ['./dist'] }),
     prepareScriptable({
-      scriptfile: target,
-      package: './scriptable.json'
+      scriptfile: './dist/workhours-lockscreen.js',
+      package: './workhours-lockscreen.scriptable.json'
     }),
-    {
-      name: 'Copy target',
-      setup(build) {
-        build.onEnd(() => {
-          // copyFile(
-          //   resolve(target),
-          //   resolve(
-          //     homedir(),
-          //     './Library/Mobile Documents/iCloud~dk~simonbs~Scriptable/Documents/Workhours Weekly.js'
-          //   )
-          // );
-        });
-      }
-    }
+    prepareScriptable({
+      scriptfile: './dist/workhours-single.js',
+      package: './workhours-single.scriptable.json'
+    }),
+    prepareScriptable({
+      scriptfile: './dist/workhours-triplet.js',
+      package: './workhours-triplet.scriptable.json'
+    })
   ]
 })
   .then(() => !isWatchMode && process.exit(0))

@@ -1,0 +1,9 @@
+{
+  "always_run_in_app": true,
+  "icon": {
+    "color": "blue",
+    "glyph": "business-time"
+  },
+  "name": "Workhours Single",
+  "share_sheet_inputs": ["plain-text"]
+}

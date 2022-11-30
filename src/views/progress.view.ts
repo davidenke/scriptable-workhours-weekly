@@ -15,7 +15,7 @@ export const getProgressLabelSize = (label: string): number => {
   return [45, 40, 35, 30, 26, 23, 21, 20][label.length] ?? 19;
 };
 
-export const addProgress = (stack: WidgetStack, percentage: number, label: string) => {
+export const addProgress = (stack: ListWidget | WidgetStack, percentage: number, label: string) => {
   const progressForeground = getItemNear(progressForegrounds, percentage);
   const progress = createProgressCircle(
     Math.min(percentage, 1),

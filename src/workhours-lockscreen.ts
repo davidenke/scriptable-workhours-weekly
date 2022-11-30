@@ -1,16 +1,13 @@
 import { readParameters } from './utils/auxiliary.utils';
-import { i18n } from './utils/i18n.utils';
-import { getHoursCurrentWeek, getHoursLastWeek, getHoursToday } from './utils/mite.utils';
+import { getHoursCurrentWeek } from './utils/mite.utils';
 import { formatMinutes } from './utils/time.utils';
-import { addInfo } from './views/info.view';
+import { addProgress } from './views/progress.view';
 
 const widgetBackground = new Color('#222', 1);
 
 const createWidget = (
   hours: number,
   current: number,
-  last: number,
-  today: number,
   hideLabels: boolean,
   collapse: boolean
 ): ListWidget => {
@@ -18,24 +15,13 @@ const createWidget = (
   if (!collapse) {
     widget.backgroundColor = widgetBackground;
     widget.useDefaultPadding();
+  } else {
+    widget.backgroundColor = Color.clear();
+    widget.setPadding(0, 0, 0, 0);
   }
 
-  const wrapper = widget.addStack();
-  wrapper.layoutHorizontally();
-  wrapper.centerAlignContent();
-
-  // add a circle
-  const addHours = (minutes: number, progress: number, label: string) => {
-    const formatted = formatMinutes(minutes);
-    addInfo(wrapper, progress, formatted, !hideLabels ? label : undefined);
-  };
-
-  // current week hours
-  addHours(current, current / 60 / hours, i18n('LABEL.CURRENT_WEEK'));
-  !collapse && wrapper.addSpacer(undefined as any);
-  addHours(last, last / 60 / hours, i18n('LABEL.LAST_WEEK'));
-  !collapse && wrapper.addSpacer(undefined as any);
-  addHours(today, today / 60 / (hours / 5), i18n('LABEL.TODAY'));
+  // add a pure circle
+  addProgress(widget, current / 60 / hours, formatMinutes(current));
 
   return widget;
 };
@@ -43,14 +29,12 @@ const createWidget = (
 // we always need application parameters and the current week hours
 const { context, token, hours = 40, hideLabels = false, collapse = false } = readParameters();
 const current = context && token ? await getHoursCurrentWeek(context, token) : 12.5;
-const last = context && token ? await getHoursLastWeek(context, token) : 38.75;
-const today = context && token ? await getHoursToday(context, token) : 3.25;
-const widget = createWidget(hours, current, last, today, hideLabels, collapse);
+const widget = createWidget(hours, current, hideLabels, collapse);
 
 if (config.runsInWidget) {
   Script.setWidget(widget);
 } else if (config.runsInApp) {
-  await widget.presentMedium();
+  await widget.presentSmall();
 } else {
   await QuickLook.present(widget, undefined as any);
 }
