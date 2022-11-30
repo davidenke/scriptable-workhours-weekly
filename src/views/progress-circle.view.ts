@@ -25,7 +25,7 @@ export const createProgressCircle = (
   percentage: number,
   background: Color,
   foreground: Color,
-  color: Color,
+  labelColor: Color,
   label = '',
   font = 25,
   size = 100,
@@ -69,7 +69,7 @@ export const createProgressCircle = (
   const innerSize = size - stroke * 2;
   const y = (size - font * assumedLineHeight) / 2;
   context.setTextAlignedCenter();
-  context.setTextColor(color);
+  context.setTextColor(labelColor);
   context.setFont(Font.mediumSystemFont(font));
   context.drawTextInRect(label, new Rect(stroke, y, innerSize, innerSize));
 

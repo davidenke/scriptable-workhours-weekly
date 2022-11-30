@@ -1,8 +1,9 @@
 type WidgetParameters = {
-  collapse: boolean;
   context: string;
   token: string;
+
   hours: number;
+  collapse: boolean;
   hideLabels: boolean;
 };
 
