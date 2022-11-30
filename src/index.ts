@@ -1,11 +1,18 @@
 import { readParameters } from './utils/auxiliary.utils';
 import { i18n } from './utils/i18n.utils';
+import { getHoursCurrentWeek, getHoursLastWeek, getHoursToday } from './utils/mite.utils';
+import { formatMinutes } from './utils/time.utils';
 import { addInfo } from './views/info.view';
 import { addProgress } from './views/progress.view';
 
 const widgetBackground = new Color('#222', 1);
 
-const createWidget = async (context: string, token: string): Promise<ListWidget> => {
+const createWidget = async (
+  hours: number,
+  current: number,
+  last: number,
+  today: number
+): Promise<ListWidget> => {
   const widget = new ListWidget();
   widget.backgroundColor = widgetBackground;
   widget.useDefaultPadding();
@@ -14,21 +21,36 @@ const createWidget = async (context: string, token: string): Promise<ListWidget>
   wrapper.layoutHorizontally();
 
   // current week hours
-  addProgress(wrapper, 0.15, '12h');
+  const currentWeekProgress = current / 60 / hours;
+  const currentWeekFormatted = formatMinutes(current);
+  addProgress(wrapper, currentWeekProgress, currentWeekFormatted, 30);
   wrapper.addSpacer(18);
+  wrapper.centerAlignContent();
 
   // mini info container
   const infos = wrapper.addStack();
   infos.layoutHorizontally();
-  addInfo(infos, 0.95, '6,25h', i18n('LABEL.TODAY'));
+
+  // last week hours
+  const lastWeekProgress = last / 60 / hours;
+  const lastWeekFormatted = formatMinutes(last);
+  addInfo(infos, lastWeekProgress, lastWeekFormatted, i18n('LABEL.LAST_WEEK'));
+
   infos.addSpacer(18);
-  addInfo(infos, 0.75, '38,5h', i18n('LABEL.LAST_WEEK'));
+
+  // todays hours
+  const todayProgress = today / 60 / (hours / 5);
+  const todayFormatted = formatMinutes(today);
+  addInfo(infos, todayProgress, todayFormatted, i18n('LABEL.TODAY'));
 
   return widget;
 };
 
-const { context, token } = readParameters();
-const widget = await createWidget(context, token);
+const { context, token, hours } = readParameters();
+const current = await getHoursCurrentWeek(context, token);
+const last = await getHoursLastWeek(context, token);
+const today = await getHoursToday(context, token);
+const widget = await createWidget(hours, current, last, today);
 
 if (!config.runsInWidget) {
   widget.presentMedium();

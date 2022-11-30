@@ -27,11 +27,13 @@ export const createProgressCircle = (
   foreground: Color,
   color: Color,
   label = '',
+  font = 25,
   size = 100,
   stroke = 10
 ): DrawContext => {
   const center = new Point(size / 2, size / 2);
   const radius = (size - stroke) / 2;
+  const assumedLineHeight = 1.25;
 
   // prepare draw context
   const path = new Path();
@@ -64,10 +66,12 @@ export const createProgressCircle = (
   addCap(context, stroke, getPointAtAngle(degreesToRadians(360 * percentage), center, radius));
 
   // add label
+  const innerSize = size - stroke * 2;
+  const y = (size - font * assumedLineHeight) / 2;
   context.setTextAlignedCenter();
   context.setTextColor(color);
-  context.setFont(Font.largeTitle());
-  context.drawTextInRect(label, new Rect(stroke, size / 2, size - stroke * 2, size - stroke * 2));
+  context.setFont(Font.mediumSystemFont(font));
+  context.drawTextInRect(label, new Rect(stroke, y, innerSize, innerSize));
 
   // deliver result
   return context;

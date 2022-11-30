@@ -90,9 +90,9 @@ build({
   platform: 'node',
   format: 'esm',
   bundle: true,
-  minify: !isWatchMode,
-  treeShaking: !isWatchMode,
-  sourcemap: isWatchMode,
+  minify: false, // !isWatchMode,
+  treeShaking: false, // !isWatchMode,
+  sourcemap: false, // isWatchMode,
   watch: isWatchMode,
   logLevel: 'info',
   plugins: [
@@ -112,13 +112,13 @@ build({
       name: 'Copy target',
       setup(build) {
         build.onEnd(() => {
-          copyFile(
-            resolve('./dist/index.js'),
-            resolve(
-              homedir(),
-              './Library/Mobile Documents/iCloud~dk~simonbs~Scriptable/Documents/Workhours Weekly.js'
-            )
-          );
+          // copyFile(
+          //   resolve('./dist/index.js'),
+          //   resolve(
+          //     homedir(),
+          //     './Library/Mobile Documents/iCloud~dk~simonbs~Scriptable/Documents/Workhours Weekly.js'
+          //   )
+          // );
         });
       }
     }
