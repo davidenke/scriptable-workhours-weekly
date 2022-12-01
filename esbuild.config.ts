@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { config } from 'dotenv';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
@@ -10,6 +11,7 @@ const isWatchMode = process.argv.includes('--watch');
 // provide env variables
 config();
 
+// allways add the vars, so the script doesn't fail
 const env = { SWW_CONTEXT: '""', SWW_TOKEN: '""' };
 let define = env;
 
@@ -21,8 +23,18 @@ if (isDevMode) {
   );
 }
 
-// define all bundles to be built
+// define all build targets
 const widgets = ['workhours-lockscreen', 'workhours-single', 'workhours-triplet'];
+
+// check all necessary files to be present
+// prettier-ignore
+const missing = widgets
+  .reduce((a, w) => [...a, `./src/${w}.ts`, `./${w}.scriptable.json`], [] as string[])
+  .filter(file => !existsSync(file));
+if (missing.length > 0) {
+  console.error(`Missing some files:\n- ${missing.join('\n- ')}`);
+  process.exit(1);
+}
 
 build({
   entryPoints: widgets.map(widget => `./src/${widget}.ts`),
