@@ -3,7 +3,6 @@
 ![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/homescreen.jpg)
 ![image](https://raw.githubusercontent.com/davidenke/scriptable-workhours-weekly/main/screenshots/lockscreen.jpg)
 
-
 This package contains some Widgets to be used in the georgeous [Scriptable](https://scriptable.app) app for iOS.
 It is a simple UI to show **your workhours from [Mite](https://mite.yo.lk)** using [its API](https://mite.yo.lk/en/api/).
 
@@ -45,13 +44,13 @@ Once installed and configured as Widget, you have to provide two essential prope
 
 > All currently available properties can be found as `WidgetParameters` type in the [src/utils/auxiliary.utils.ts](src/utils/auxiliary.utils.ts).
 
-| Property     | Description                                                                                                                                                 |          | Default |
-| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | :-----: |
-| `context`    | The Mite context (or subdomain if you will) to be used                                                                                                      | required |         |
-| `token`      | The Mite API token which can be generated in your Mite account                                                                                              | required |         |
-| `hours`      | The number of hours you work per week                                                                                                                       | optional |  `40`   |
-| `collapse`   | Tries to narrow down spacing and remove backgrounds to macke the content appear as big as possible within the Widget. Meant to be used for Lockscreen usage | optional | `false` |
-| `hideLabels` | Hides the labels below the stats (not the labels inside the cirlces)                                                                                        | optional | `false` |
+| Property     | Description                                                                                                                                                |          | Default |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | :-----: |
+| `context`    | The Mite context (or subdomain if you will) to be used                                                                                                     | required |         |
+| `token`      | The Mite API token which can be generated in your Mite account                                                                                             | required |         |
+| `hours`      | The number of hours you work per week                                                                                                                      | optional |  `40`   |
+| `collapse`   | Tries to narrow down spacing and remove backgrounds to make the content appear as big as possible within the Widget. Meant to be used for Lockscreen usage | optional | `false` |
+| `hideLabels` | Hides the labels below the stats (not the labels inside the cirlces)                                                                                       | optional | `false` |
 
 So a sample configuration could look like this:
 
