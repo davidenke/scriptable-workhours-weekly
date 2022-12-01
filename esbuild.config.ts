@@ -1,7 +1,16 @@
+import { config } from 'dotenv';
 import { build } from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 
 import { prepareScriptable } from './tools/esbuild-plugin-scriptable.js';
+
+// provide env variables
+config();
+
+// prettier-ignore
+const define = Object
+  .entries(process.env)
+  .reduce((acc, [key, value]) => ({ ...acc, [key]: `"${value}"` }), {});
 
 const isWatchMode = process.argv.includes('--watch');
 
@@ -14,6 +23,7 @@ const widgets = [
 build({
   entryPoints: widgets.map(widget => `./src/${widget}.ts`),
   outdir: './dist',
+  define,
   platform: 'node',
   format: 'esm',
   bundle: true,

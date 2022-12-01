@@ -30,5 +30,8 @@ coverage
 test-results/
 playwright-report/
 
+# Sensible stuff
+.env
+
 # Generated files
 /src/scriptable.d.ts
