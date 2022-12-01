@@ -5,12 +5,14 @@ import { prepareScriptable } from './tools/esbuild-plugin-scriptable.js';
 
 const isWatchMode = process.argv.includes('--watch');
 
+const widgets = [
+  'workhours-lockscreen',
+  'workhours-single',
+  'workhours-triplet'
+];
+
 build({
-  entryPoints: [
-    './src/workhours-lockscreen.ts',
-    './src/workhours-single.ts',
-    './src/workhours-triplet.ts'
-  ],
+  entryPoints: widgets.map(widget => `./src/${widget}.ts`),
   outdir: './dist',
   platform: 'node',
   format: 'esm',
@@ -22,18 +24,12 @@ build({
   logLevel: isWatchMode ? 'info' : 'warning',
   plugins: [
     clean({ patterns: ['./dist'] }),
-    prepareScriptable({
-      scriptfile: './dist/workhours-lockscreen.js',
-      package: './workhours-lockscreen.scriptable.json'
-    }),
-    prepareScriptable({
-      scriptfile: './dist/workhours-single.js',
-      package: './workhours-single.scriptable.json'
-    }),
-    prepareScriptable({
-      scriptfile: './dist/workhours-triplet.js',
-      package: './workhours-triplet.scriptable.json'
-    })
+    ...widgets.map(widget =>
+      prepareScriptable({
+        scriptfile: `./dist/${widget}.js`,
+        package: `./${widget}.scriptable.json`
+      })
+    )
   ]
 })
   .then(() => !isWatchMode && process.exit(0))
