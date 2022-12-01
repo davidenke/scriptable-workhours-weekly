@@ -1,6 +1,6 @@
 export {};
 
 declare global {
-  const SWW_CONTEXT: string | undefined;
-  const SWW_TOKEN: string | undefined;
+  const SWW_CONTEXT: string;
+  const SWW_TOKEN: string;
 }

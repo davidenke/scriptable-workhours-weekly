@@ -14,7 +14,7 @@
     "generate:types": "mkdocs-ts https://docs.scriptable.app/scriptable.json src/scriptable.d.ts",
     "test": "jest",
     "build": "ts-node-esm --transpileOnly --logError esbuild.config.ts",
-    "build:watch": "npm run build -- --watch",
+    "build:watch": "npm run build -- --dev --watch",
     "release": "release-it --ci --verbose"
   },
   "devDependencies": {

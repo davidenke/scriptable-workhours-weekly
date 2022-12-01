@@ -4,21 +4,25 @@ import { clean } from 'esbuild-plugin-clean';
 
 import { prepareScriptable } from './tools/esbuild-plugin-scriptable.js';
 
+const isDevMode = process.argv.includes('--dev');
+const isWatchMode = process.argv.includes('--watch');
+
 // provide env variables
 config();
 
-// prettier-ignore
-const define = Object
-  .entries(process.env)
-  .reduce((acc, [key, value]) => ({ ...acc, [key]: `"${value}"` }), {});
+const env = { SWW_CONTEXT: '""', SWW_TOKEN: '""' };
+let define = env;
 
-const isWatchMode = process.argv.includes('--watch');
+// add env vars only for dev mode (to avoid exposing secrets)
+if (isDevMode) {
+  define = Object.entries(process.env).reduce(
+    (acc, [key, value]) => ({ ...acc, [key]: `"${value}"` }),
+    env
+  );
+}
 
-const widgets = [
-  'workhours-lockscreen',
-  'workhours-single',
-  'workhours-triplet'
-];
+// define all bundles to be built
+const widgets = ['workhours-lockscreen', 'workhours-single', 'workhours-triplet'];
 
 build({
   entryPoints: widgets.map(widget => `./src/${widget}.ts`),
