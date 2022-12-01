@@ -45,9 +45,9 @@ const createWidget = (
 
 // we always need application parameters and the current week hours
 const { context, token, hours = 40, hideLabels = false, collapse = false } = readParameters();
-const current = context && token ? await getHoursCurrentWeek(context, token) : 12.5;
-const last = context && token ? await getHoursLastWeek(context, token) : 38.75;
-const today = context && token ? await getHoursToday(context, token) : 3.25;
+const current = context && token ? await getHoursCurrentWeek(context, token) : 0;
+const last = context && token ? await getHoursLastWeek(context, token) : 0;
+const today = context && token ? await getHoursToday(context, token) : 0;
 const widget = createWidget(hours, current, last, today, hideLabels, collapse);
 
 if (config.runsInWidget) {
