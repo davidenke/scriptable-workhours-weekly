@@ -96,7 +96,7 @@ Dependend on the device language, the correct translation can be used with e.g. 
 
 For convenience, the Widgets are additionally packaged into `*.scriptable` files, which can be directly opened in Scriptable.
 
-This is done with a custom [esbuild plugin](tools/esbuild-plugin-scriptable.ts). This plugin is consumed in the [esbuild.config.ts](esbuild.config.ts) and can be configured with a `scriptfile` path (relative to the root of the project) and a `package` property which can either be a path to a JSON file, or and inline object providing the package meta data.
+This is done with a custom [esbuild plugin](tools/esbuild-plugin-scriptable.ts). This plugin is consumed in the [esbuild.config.ts](esbuild.config.ts) and can be configured with a `scriptfile` path (relative to the root of the project) and a `package` property which can either be a path to a JSON file, or an inline object providing the package meta data.
 
 As this is typed, the plugin options can be found as `ScriptablePluginOptions` and the package meta data format as `ScriptableMetadata` types in [tools/esbuild-plugin-scriptable.ts](tools/esbuild-plugin-scriptable.ts).
 
