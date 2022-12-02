@@ -72,7 +72,7 @@ To gain the benefits of typed JS I needed to provide typings for the [Scriptable
 
 After manully declaring some of the types, I decided to generate them from this API in some way, and found out that one of the example Widgets already uses the documentation in a JSON form, which is [provided seprately](https://docs.scriptable.app/scriptable.json).
 
-So I came up with a simple parser for the (I guess) MkDocs format, which I tracked in a separate [repository](https://github.com/davidenke/mkdocs-ts). This CLI tool is run after postinstall and generates the typings in [src/scriptable.d.ts](src/scriptable.d.ts), but could also be run directly with
+So I came up with a simple parser for the (I guess) MkDocs format, which I tracked in a [separate repository](https://github.com/davidenke/mkdocs-ts). This CLI tool is run after postinstall and generates the typings in [src/scriptable.d.ts](src/scriptable.d.ts), but could also be run directly with
 
 ```bash
 npx mkdocs-ts https://docs.scriptable.app/scriptable.json src/scriptable.d.ts
@@ -96,7 +96,7 @@ Dependend on the device language, the correct translation can be used with e.g. 
 
 For convenience, the Widgets are additionally packaged into `*.scriptable` files, which can be directly opened in Scriptable.
 
-This is done with a custom [esbuild plugin](tools/esbuild-plugin-scriptable.ts). This plugin is configured in the [esbuild.config.ts](esbuild.config.ts) and can be configured with a `scriptfile` path (relative to the root of the project) and a `package` property which can either be a path to a JSON file, or and inline object providing the package meta data.
+This is done with a custom [esbuild plugin](tools/esbuild-plugin-scriptable.ts). This plugin is consumed in the [esbuild.config.ts](esbuild.config.ts) and can be configured with a `scriptfile` path (relative to the root of the project) and a `package` property which can either be a path to a JSON file, or and inline object providing the package meta data.
 
 As this is typed, the plugin options can be found as `ScriptablePluginOptions` and the package meta data format as `ScriptableMetadata` types in [tools/esbuild-plugin-scriptable.ts](tools/esbuild-plugin-scriptable.ts).
 
