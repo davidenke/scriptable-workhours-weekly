@@ -112,7 +112,7 @@ For KPIs, as the fancy project owner would call them.
 
 As the Scriptable API exposes the posibility to paint in a draw context, one has nearly everything we need to draw stuff like in Canvas or SVG.
 
-Have a look on the `createProgressCircle` function at [src/view/progress-circle.view.ts](src/view/progress-circle.view.ts) to see how this is done.
+Have a look on the `createProgressCircle` function at [src/views/progress-circle.view.ts](src/views/progress-circle.view.ts) to see how this is done.
 
 ---
 
